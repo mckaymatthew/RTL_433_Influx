@@ -27,8 +27,8 @@ int main(int argc, char *argv[])
     a.connect(&extract, &JsonExtractor::newHumidityMeasurement, &cache, &ValueCache::processHumidityMeasurement);
     a.connect(&extract, &JsonExtractor::newTempMeasurement, &cache, &ValueCache::processTempMeasurement);
 
-    a.connect(&cache, &ValueCache::newHumidityMeasurement, [](int16_t id, double val){ qWarning() << QString("%1: %2").arg(id).arg(val); });
-    a.connect(&cache, &ValueCache::newTempMeasurement, [](int16_t id, double val){ qWarning() << QString("%1: %2").arg(id).arg(val); });
+    a.connect(&cache, &ValueCache::newHumidityMeasurement, [](int16_t id, double val){ qWarning() << QString("Humid: %1: %2").arg(id).arg(val); });
+    a.connect(&cache, &ValueCache::newTempMeasurement, [](int16_t id, double val){ qWarning() << QString("Temp: %1: %2").arg(id).arg(val); });
 
     a.connect(&cache, &ValueCache::newHumidityMeasurement, &poster, &InfluxPoster::processHumidityMeasurement);
     a.connect(&cache, &ValueCache::newTempMeasurement, &poster, &InfluxPoster::processTempMeasurement);

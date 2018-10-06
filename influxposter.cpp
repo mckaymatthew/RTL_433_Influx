@@ -39,5 +39,15 @@ void InfluxPoster::processTempMeasurement(int16_t id, double tempC) {
 
 }
 void InfluxPoster::processHumidityMeasurement(int16_t id, double relH) {
+    QString lut = QString("Sensor%1").arg(id);
+    if(m_settings.contains(lut)) {
+        QString idStr = m_settings.value(lut).toString();
+        QString postData = QString("humidity,room=%1 value=%2").arg(idStr).arg(relH);
+
+        QNetworkRequest request(QUrl("http://10.0.0.23:8086/write?db=humid"));
+        request.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
+        manager.post(request, postData.toUtf8());
+
+    }
 
 }
