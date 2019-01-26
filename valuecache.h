@@ -20,7 +20,7 @@ private:
     struct {
         double previousValue;
         unsigned int rejectedMeasurements;
-    } typedef CacheItem_t
+    } typedef CacheItem_t;
     typedef QMap<int16_t, CacheItem_t> Cache_t;
     Cache_t tempCache;
     Cache_t humidCache;
