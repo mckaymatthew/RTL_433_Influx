@@ -28,9 +28,9 @@ void ValueCache::processTempMeasurement(int16_t id, double tempC) {
 }
 void ValueCache::processHumidityMeasurement(int16_t id, double relH) {
     //Rely on auto initialization of the key;
-    double prevVal = humidCache[id];
+    double prevVal = humidCache[id].previousValue;
     if(relH != prevVal) {
-        humidCache[id] = relH;
+        humidCache[id].previousValue = relH;
         emit this->newHumidityMeasurement(id, relH);
     }
 }
