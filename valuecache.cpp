@@ -1,4 +1,5 @@
 #include "valuecache.h"
+#include <cmath>
 
 ValueCache::ValueCache(QObject *parent) : QObject(parent)
 {
@@ -9,10 +10,10 @@ void ValueCache::processTempMeasurement(int16_t id, double tempC) {
     if(tempCache.contains(id)) {
         CacheItem_t prevVal = tempCache[id];
         const bool tempNew = tempC != prevVal.previousValue;
-        const bool changeReasonable = abs(tempC - prevVal.previousValue) < 20.0;
+        const bool changeReasonable = std::abs(tempC - prevVal.previousValue) < 20.0;
         const bool rejectedMode = tempCache[id].rejectedMeasurements > 5;
         const bool update = tempNew && (changeReasonable || rejectedMode);
-        const bool rejectMeasurement = !update;
+        const bool rejectMeasurement = !changeReasonable;
         if(update) {
             tempCache[id].rejectedMeasurements = 0;
             tempCache[id].previousValue = tempC;
