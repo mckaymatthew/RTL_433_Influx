@@ -49,6 +49,8 @@ void InfluxPoster::processHumidityMeasurement(int16_t id, double relH) {
         request.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
         manager.post(request, postData.toUtf8());
 
+    } else {
+        qWarning() << QString("Sensor Not in LUT: %1").arg(id);
     }
 
 }
