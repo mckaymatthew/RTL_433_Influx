@@ -28,10 +28,23 @@ void ValueCache::processTempMeasurement(int16_t id, double tempC) {
     }
 }
 void ValueCache::processHumidityMeasurement(int16_t id, double relH) {
-    //Rely on auto initialization of the key;
-    double prevVal = humidCache[id].previousValue;
-    if(relH != prevVal) {
-        humidCache[id].previousValue = relH;
-        emit this->newHumidityMeasurement(id, relH);
+    if(humidCache.contains(id)) {
+        CacheItem_t prevVal = humidCache[id];
+        const bool humidNew = relH != prevVal.previousValue;
+        const bool changeReasonable = std::abs(relH - prevVal.previousValue) < 10.0;
+        const bool rejectedMode = humidCache[id].rejectedMeasurements > 5;
+        const bool update = humidNew && (changeReasonable || rejectedMode);
+        const bool rejectMeasurement = !changeReasonable;
+        if(update) {
+            humidCache[id].rejectedMeasurements = 0;
+            humidCache[id].previousValue = relH;
+            emit this->newHumidityMeasurement(id, relH);
+        }
+        if(rejectMeasurement) {
+            humidCache[id].rejectedMeasurements = humidCache[id].rejectedMeasurements + 1;
+        }
+    } else {
+        humidCache[id].previousValue = 0.0;
+        humidCache[id].rejectedMeasurements = 0;
     }
 }
