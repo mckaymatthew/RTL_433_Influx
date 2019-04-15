@@ -26,6 +26,7 @@ InfluxPoster::InfluxPoster(QObject *parent)
 
 void InfluxPoster::processTempMeasurement(int16_t id, double tempC) {
     QString lut = QString("Sensor%1").arg(id);
+
     if(m_settings.contains(lut)) {
         QString idStr = m_settings.value(lut).toString();
         QString postData = QString("temp,room=%1 value=%2").arg(idStr).arg(tempC);
@@ -33,6 +34,8 @@ void InfluxPoster::processTempMeasurement(int16_t id, double tempC) {
         request.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
         manager.post(request, postData.toUtf8());
 
+    } else {
+        qWarning() << QString("Sensor Not in LUT: %1").arg(id);
     }
 
 }
