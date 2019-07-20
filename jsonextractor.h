@@ -12,6 +12,8 @@ public:
 signals:
     void newTempMeasurement(int16_t id, double tempC);
     void newHumidityMeasurement(int16_t id, double relH);
+    void newRainRate(int16_t id, double rainRate);
+    void newRainTotal(int16_t id, double rainTotal);
 public slots:
     void extract(QByteArray data);
 };

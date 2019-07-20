@@ -20,6 +20,12 @@ void JsonExtractor::extract(QByteArray data) {
             if(obj.contains("humidity")) {
                 emit this->newHumidityMeasurement(id, obj.value("humidity").toDouble());
             }
+            if(obj.contains("rain_rate")) {
+                emit this->newRainRate(id, obj.value("rain_rate").toDouble());
+            }
+            if(obj.contains("total_rain")) {
+                emit this->newRainTotal(id, obj.value("total_rain").toDouble());
+            }
         }
     }
 

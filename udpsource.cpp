@@ -13,7 +13,6 @@ UdpSource::UdpSource(uint32_t portListen, QObject *parent)
 
 }
 UdpSource::~UdpSource() {
-    qCritical() << "Destruction";
 }
 void UdpSource::processPendingDatagrams() {
     QHostAddress sender;
