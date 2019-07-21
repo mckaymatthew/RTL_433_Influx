@@ -8,12 +8,12 @@ bool evaluateUpdate(ValueCache::Cache_t & cache, int16_t id, double newValue, do
     if(cache.contains(id)) {
         ValueCache::CacheItem_t prevVal = cache[id];
         const bool tempNew = newValue != prevVal.previousValue;
-        const bool halfHourUpdate = cache[id].timer.elapsed() > (30 * 60 * 1000);
+        const bool timedUpdate = cache[id].timer.elapsed() > (60 * 60 * 1000);
 
         const bool changeReasonable = std::abs(newValue - prevVal.previousValue) < maxReasonableChange;
-        const bool rejectedMode = cache[id].rejectedMeasurements > 10;
+        const bool rejectedMode = cache[id].rejectedMeasurements > (3 * 2 * 3); //each sensor is 3 tx, 2 recievers, 3 bad mesurements
 
-        const bool update = (halfHourUpdate || tempNew) && (changeReasonable || rejectedMode);
+        const bool update = (timedUpdate || tempNew) && (changeReasonable || rejectedMode);
         const bool rejectMeasurement = !changeReasonable;
         if(update) {
             cache[id].rejectedMeasurements = 0;
