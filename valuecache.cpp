@@ -45,13 +45,13 @@ ValueCache::ValueCache(QObject *parent)
 }
 
 void ValueCache::processTempMeasurement(int16_t id, double tempC) {
-    const bool doEmit = evaluateUpdate(tempCache, id, tempC, 20);
+    const bool doEmit = evaluateUpdate(tempCache, id, tempC, 6); //6 degrees C is 10.8 degree F
     if(doEmit) {
         emit this->newTempMeasurement(id, tempC);
     }
 }
 void ValueCache::processHumidityMeasurement(int16_t id, double relH) {
-    const bool doEmit = evaluateUpdate(humidCache, id, relH, 20);
+    const bool doEmit = evaluateUpdate(humidCache, id, relH, 10); //10 percent change
     if(doEmit) {
         emit this->newHumidityMeasurement(id, relH);
     }
